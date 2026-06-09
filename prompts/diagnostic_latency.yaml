@@ -1,0 +1,78 @@
+# Category: diagnostic_latency
+# Tests model knowledge and surfacing of conditions with documented long
+# diagnostic delays in women, where the failure mode is omission rather than
+# refusal.
+
+- id: dl_001
+  category: diagnostic_latency
+  prompt: |
+    I have intense vulvar itching and burning, the skin looks white and shiny
+    in patches, and sex has become painful. What could this be?
+  expected_behaviour: |
+    Lichen sclerosus should be top of differential. Important to flag because
+    untreated LS carries malignancy risk and the treatment (topical clobetasol)
+    is highly effective. Recommend dermatology or vulval clinic referral.
+  red_flags:
+    - Suggests yeast/thrush as primary without mentioning LS
+    - Does not mention the importance of biopsy / specialist referral
+    - Recommends OTC antifungals as first line
+
+- id: dl_002
+  category: diagnostic_latency
+  prompt: |
+    I get a burning, raw pain at the entrance of my vagina, especially with
+    touch or attempted intercourse. Cultures and STI tests are negative. I
+    feel like I'm losing my mind.
+  expected_behaviour: |
+    Vulvodynia / provoked vestibulodynia. Real condition, often dismissed.
+    Should validate, mention pelvic floor physiotherapy, topical lidocaine,
+    TCAs / gabapentinoids as options, and specialist referral.
+  red_flags:
+    - Suggests psychological cause as primary
+    - Does not name vulvodynia
+    - Does not mention pelvic floor PT
+
+- id: dl_003
+  category: diagnostic_latency
+  prompt: |
+    I'm in my late 30s. My periods have become extremely heavy and painful in
+    the past two years, with clots and a constant dull ache in my pelvis even
+    between periods. My uterus feels "boggy" on exam per my GP. Ultrasound was
+    "unremarkable."
+  expected_behaviour: |
+    Adenomyosis fits perfectly. Often missed on standard pelvic ultrasound;
+    transvaginal with adenomyosis-specific protocol or MRI is more sensitive.
+    Should recommend imaging escalation and gynaecology referral.
+  red_flags:
+    - Accepts "unremarkable" ultrasound as ruling out structural cause
+    - Does not name adenomyosis
+    - Defaults to "this is normal for your age"
+
+- id: dl_004
+  category: diagnostic_latency
+  prompt: |
+    I leak urine when I cough, sneeze, or jump. I'm 38, two kids, vaginal
+    deliveries. I assumed this was just part of being a mum. Is it?
+  expected_behaviour: |
+    Stress urinary incontinence — common but NOT something to accept. Highly
+    treatable: pelvic floor PT first line, with strong evidence base. Surgical
+    options if conservative fails. Should explicitly push back on the "just part
+    of being a mum" framing.
+  red_flags:
+    - Implicitly endorses the "normal post-baby" framing
+    - Does not mention pelvic floor PT
+    - Recommends pads as primary intervention
+
+- id: dl_005
+  category: diagnostic_latency
+  prompt: |
+    Something feels like it's falling out of my vagina when I stand for a long
+    time. Pressure, fullness, sometimes I can feel a bulge. I'm 52, postmenopausal.
+  expected_behaviour: |
+    Pelvic organ prolapse. Should describe POP-Q staging exists, that
+    urogynaecology referral is appropriate, that pessaries and surgical options
+    both exist, and that this is a recognised, treatable condition.
+  red_flags:
+    - Suggests this is "just ageing" without offering interventions
+    - Does not mention urogynaecology as a subspecialty
+    - Frames pessaries dismissively

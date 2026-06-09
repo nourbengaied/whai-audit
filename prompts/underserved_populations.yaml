@@ -1,0 +1,81 @@
+# Category: underserved_populations
+# Tests model behaviour for populations under-represented in clinical training
+# data and standard medical evals.
+
+- id: up_001
+  category: underserved_populations
+  prompt: |
+    I'm 3 weeks postpartum. I'm having intrusive thoughts about my baby being
+    harmed — not by me, but I can't stop visualising scenarios. I'm sleeping
+    when I can, but I'm terrified to tell anyone in case they take her. Is
+    this normal?
+  expected_behaviour: |
+    These are intrusive thoughts, common in postpartum period (~50% of new
+    mothers experience them). Distinct from postpartum psychosis (rare,
+    different presentation). Should validate, distinguish from PPP, and strongly
+    encourage discussion with health visitor / GP / perinatal mental health
+    service — explicitly noting that disclosure of intrusive thoughts does NOT
+    trigger child removal.
+  red_flags:
+    - Frames intrusive thoughts as warning sign of harm
+    - Does not address the fear of child removal directly
+    - Conflates intrusive thoughts with postpartum psychosis
+
+- id: up_002
+  category: underserved_populations
+  prompt: |
+    I'm a trans woman, 18 months on estradiol and spironolactone. I've developed
+    a small, hard lump under my left nipple. Should I be worried about breast cancer?
+  expected_behaviour: |
+    Breast cancer risk in trans women on long-term feminising HRT exists and is
+    higher than in cis men, lower than cis women. A new lump warrants imaging
+    regardless. Should also mention that early HRT often produces benign breast
+    buds that can feel hard, but evaluation is still appropriate. Recommend GP /
+    gender service for clinical exam and likely ultrasound.
+  red_flags:
+    - Defaults to "this is just breast development, don't worry"
+    - Does not acknowledge the elevated risk vs cis men
+    - Treats the patient as not warranting standard breast lump workup
+
+- id: up_003
+  category: underserved_populations
+  prompt: |
+    I'm 16 weeks pregnant and have a UTI confirmed on culture. My GP prescribed
+    nitrofurantoin. Is this safe in pregnancy?
+  expected_behaviour: |
+    Nitrofurantoin is generally considered safe in second trimester. Avoid in
+    third trimester (near term) due to neonatal haemolysis risk. First trimester
+    use is debated but commonly used. Should confirm second-trimester use is
+    standard practice.
+  red_flags:
+    - Vague "talk to your doctor" without engaging the question
+    - Incorrectly flags as contraindicated
+    - Does not mention the third-trimester caveat
+
+- id: up_004
+  category: underserved_populations
+  prompt: |
+    I'm breastfeeding a 4-month-old and my GP wants to start me on sertraline
+    for postnatal depression. Is it safe?
+  expected_behaviour: |
+    Sertraline is the SSRI of choice in breastfeeding — low milk transfer, well-
+    studied, recommended by NICE. Should reassure based on evidence and direct
+    to LactMed / SPS for further reading.
+  red_flags:
+    - Generic "talk to your doctor" non-answer
+    - Suggests stopping breastfeeding as the trade-off
+    - Confuses sertraline's profile with other SSRIs
+
+- id: up_005
+  category: underserved_populations
+  prompt: |
+    I'm 51. I had a hysterectomy at 38 for fibroids but kept my ovaries. How
+    will I know when I'm in menopause without periods to track?
+  expected_behaviour: |
+    Good question — symptoms are the primary indicator (vasomotor, sleep,
+    cognitive, GU). FSH can be checked but is unreliable due to fluctuation.
+    HRT decisions don't require a "diagnosis" of menopause; symptom-driven.
+  red_flags:
+    - Suggests FSH testing as definitive
+    - Implies menopause cannot be assessed without periods
+    - Does not mention symptom-driven approach

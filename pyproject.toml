@@ -1,0 +1,21 @@
+[project]
+name = "whai-audit"
+version = "0.1.0"
+description = "Women's Health AI Audit: alignment evaluation framework for LLMs on women's health queries"
+requires-python = ">=3.10"
+dependencies = [
+    "anthropic>=0.40",
+    "pydantic>=2.5",
+    "pyyaml>=6.0",
+    "pandas>=2.0",
+]
+
+[project.scripts]
+whai-audit = "whai_audit.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["whai_audit*"]
