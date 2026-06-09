@@ -68,6 +68,7 @@ def cmd_judge(args: argparse.Namespace) -> None:
         responses=responses,
         judge_model=args.judge_model,
         results_dir=Path(args.results),
+        max_workers=args.workers,
     )
     print(f"[judge] {len(judged)} responses scored → {args.results}")
 
@@ -100,6 +101,7 @@ def build_parser() -> argparse.ArgumentParser:
     judge.add_argument("--responses-from", default=".cache")
     judge.add_argument("--judge-model", default="claude-opus-4-7")
     judge.add_argument("--results", required=True)
+    judge.add_argument("--workers", type=int, default=10, help="Parallel judge calls")
     judge.set_defaults(func=cmd_judge)
 
     an = sub.add_parser("analyse", help="Render a markdown report")

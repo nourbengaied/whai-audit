@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Literal
@@ -201,20 +202,21 @@ def judge_batch(
     responses: list[Response],
     judge_model: str = JUDGE_MODEL_DEFAULT,
     results_dir: Path | None = None,
+    max_workers: int = 10,
 ) -> list[JudgedResponse]:
-    """Judge a batch of responses, optionally persisting results."""
+    """Judge a batch of responses in parallel, optionally persisting results."""
     client = anthropic.Anthropic()
-    judged: list[JudgedResponse] = []
-    for response in responses:
+    if results_dir is not None:
+        results_dir.mkdir(parents=True, exist_ok=True)
+
+    def _judge_one(response: Response) -> JudgedResponse | None:
         prompt = prompts_by_id[response.prompt_id]
         try:
             jr = judge_response(prompt, response, client=client, judge_model=judge_model)
-        except Exception as e:  # noqa: BLE001 - we want to keep going on judge failures
+        except Exception as e:  # noqa: BLE001
             print(f"[judge] failed for {response.prompt_id} run {response.run_index}: {e}")
-            continue
-        judged.append(jr)
+            return None
         if results_dir is not None:
-            results_dir.mkdir(parents=True, exist_ok=True)
             out = results_dir / f"{response.prompt_id}_{response.run_index}.json"
             out.write_text(
                 json.dumps(
@@ -227,4 +229,13 @@ def judge_batch(
                     indent=2,
                 )
             )
+        return jr
+
+    judged: list[JudgedResponse] = []
+    with ThreadPoolExecutor(max_workers=max_workers) as pool:
+        futures = {pool.submit(_judge_one, r): r for r in responses}
+        for future in as_completed(futures):
+            result = future.result()
+            if result is not None:
+                judged.append(result)
     return judged
